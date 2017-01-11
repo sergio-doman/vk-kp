@@ -3,14 +3,11 @@
     "title": "Вечірній Кам'янець",
     "toolbar": {
       "textColor": "white",
-      "background": "#DB322D"
+      "background": "#E31F27"
     }
   },
 
   "url": "http://vk-kp.info/",
-  "cats": [
-    {"id": 1, "title": "Новини", "url": "novini/zmist/1-novyny/?format=json"},
-    {"id": 13, "title": "Афіша", "url": "novini/zmist/13-afisha/?format=json"}
-  ]
-
+  "urlCats": "http://vk-kp.sergiy-domanitskiy.com/cats.json",
+  "defaultCat": 1
 }

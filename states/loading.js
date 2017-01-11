@@ -6,34 +6,36 @@ module.exports = function (app) {
 
   return {
 
+    page: {},
+
     draw: function () {
-      var page = new tabris.Page({
+      var that = this;
+
+      that.page = new tabris.Page({
         title: '',
         topLevel: true
       });
 
-      page.set('background', '#db322d');
+      that.page.set('background', app.config.app.toolbar.background);
 
       var logo = new tabris.ImageView({
-        image: {src: "res/img/vk.png" },
+        image: {src: "res/img/splash.jpg" },
         scaleMode: 'fit',
-        layoutData: {centerX: 0, centerY: -50}
-      }).appendTo(page);
+        layoutData: {left: "20%", right: "20%", centerY: -50}
+      }).appendTo(that.page);
 
       new tabris.TextView({
         layoutData: {centerX: 0, top: [logo, 10]},
         textColor: "white",
         text: "неофіційна мобільна версія"
-      }).appendTo(page);
+      }).appendTo(that.page);
 
       new tabris.TextView({
         layoutData: {centerX: 0, bottom: '1%'},
         textColor: "white",
         text: "Завантаження.."
-      }).appendTo(page);
+      }).appendTo(that.page);
 
-
-      app.pages.loading = page;
     },
 
 

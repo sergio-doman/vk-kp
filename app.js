@@ -8,39 +8,22 @@ var app = {
   menu: {},
   catsNames: {},
   cats: {},
-  pages: {},
   states: {},
 
-
-  openCat: function (catId) {
-    console.log('openCat, catId = ', catId);
-
-    app.pages.list.set('title', app.catsNames[catId]);
-    app.pages.list.open();
+  clickCat: function (catId) {
+    app.states.list.open(catId);
   },
 
   loadCats: function (callback) {
-    var f = [];
-    _(app.config.cats).forEach(function (cat) {
-      f.push(function (cb) {
-
-        fetch(app.config.url + cat.url).then(function(response) {
-          return response.json();
-        }).catch(function(err) {
-          cb();
-        }).then(function(json) {
-          delete json.category.events;
-          app.cats[cat.id] = json.category;
-          cb();
-        });
-
-      });
-    });
-
-    async.parallel(f, function () {
-      if ('function' == typeof callback) {
+    fetch(app.config.urlCats).then(function(response) {
+      return response.json();
+    }).catch(function(err) {
+      callback('Failed to load categories list');
+    }).then(function(json) {
+      setTimeout(function () {
+        app.cats = json;
         callback();
-      }
+      }, 2000);
     });
   },
 
@@ -61,8 +44,15 @@ var app = {
     }
     build(app.cats, 0);
 
+
+    var logo = new tabris.ImageView({
+      image: {src: "res/img/vk.png" },
+      scaleMode: 'fit',
+      layoutData: {left: "30%", top: 5, right: "30%"}
+    }).appendTo(app.menu);
+
     new tabris.CollectionView({
-      layoutData: {left: 0, top: 0, right: 0, bottom: 0},
+      layoutData: {left: 0, top: [logo, 1], right: 0, bottom: 0},
       items: menuItems,
       itemHeight: 36,
 //      font: "bold 24px",
@@ -78,7 +68,7 @@ var app = {
 
       }
     }).on("select", function(target, value) {
-      app.openCat(value.id);
+      app.clickCat(value.id);
       app.menu.close();
     }).appendTo(app.menu);
   },
@@ -90,27 +80,20 @@ var app = {
     tabris.ui.set('textColor', app.config.app.toolbar.textColor);
     tabris.ui.set('background', app.config.app.toolbar.background);
     tabris.ui.set("displayMode", "fullscreen");
-    // tabris.ui.set('toolbarVisible', false);
+    tabris.ui.set('toolbarVisible', false);
 
     app.states.loading = require('./states/loading')(app);
     app.states.loading.init();
-
     app.states.list = require('./states/list')(app);
     app.states.list.init();
 
-
-    app.pages.loading.open();
-    app.loadCats(function () {
+    app.states.loading.page.open();
+    app.loadCats(function (err) {
+      tabris.ui.set('toolbarVisible', true);
       app.initMenu();
-      app.openCat(app.config.cats[0].id);
+      app.clickCat(app.config.defaultCat);
     });
-
-
-
-
-
   }
-
 
 }
 
