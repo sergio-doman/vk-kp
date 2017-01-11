@@ -1,6 +1,6 @@
 
+var _ = require('lodash');
 var DOMParser = require('xmldom').DOMParser;
-
 
 module.exports = function (app) {
 
@@ -16,7 +16,6 @@ module.exports = function (app) {
     guids: [],
     total: 0,
 
-    lastGuid: '',
     progress: false,
     stopAppending: false,
 
@@ -42,9 +41,8 @@ module.exports = function (app) {
           }).appendTo(cell);
 
           var nameTextView = new tabris.TextView({
-            layoutData: {left: 10, top: 16, right: [imageView, 10]},
+            layoutData: {left: 10, top: 10, right: [imageView, 10]},
             textColor: 'black', //   '#a01514',
-//            font: 'bold',
             alignment: "left"
           }).appendTo(cell);
 
@@ -57,7 +55,7 @@ module.exports = function (app) {
         }
       })
       .on("refresh", function() {
-        // console.log('that.guids: ', that.guids);
+        that.refresh();
       })
       .on("select", function(target, value) {
         console.log("selected", value.link);
@@ -68,7 +66,6 @@ module.exports = function (app) {
         }
       })
       .appendTo(that.page);
-
     },
 
     init: function () {
@@ -154,7 +151,28 @@ module.exports = function (app) {
     refresh: function () {
       var that = this;
 
-      console.log('update fresh news list');
+      if (that.progress) {
+        return;
+      }
+
+      that.fetchRss(that.catId, 0, function (err, data) {
+        if (err) {
+          window.plugins.toast.showShortTop(err);
+        }
+        else if (data.total > 0) {
+
+          var newItems = _.filter(data.items, function(i) {
+            return -1 == _.indexOf(that.guids, i.guid);
+          });
+
+          if (newItems.length > 0) {
+            that.total += newItems.length;
+            that.page.children("#newslist").first().insert(newItems, 0);
+          }
+
+        }
+      });
+
     },
 
     append: function () {
@@ -164,20 +182,15 @@ module.exports = function (app) {
         return;
       }
 
-      console.log('appending..');
-
       that.fetchRss(that.catId, that.total, function (err, data) {
-        console.log('fetched', that.catId, that.total);
-
         if (err) {
-          console.log('Error!!!');
+          window.plugins.toast.showShortTop(err);
         }
         else if (data.total > 0) {
           that.total += data.total;
           that.page.children("#newslist").first().insert(data.items);
-
-          that.lastGuid = data.items[data.items.length - 1].guid;
         }
+
       });
     },
 
@@ -185,7 +198,6 @@ module.exports = function (app) {
       var that = this;
 
       that.guids = [];
-      that.lastGuid = '';
       that.progress = false;
       that.stopAppending = false;
       that.page.children("#newslist").first().set('items', []);
