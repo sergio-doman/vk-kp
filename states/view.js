@@ -11,6 +11,34 @@ module.exports = function (app) {
     news: {},
     page: {},
 
+    clickShare: function () {
+      var that = this;
+
+      var options = {
+        message: that.news.item.title,
+        subject: 'Посилання',
+        url: app.config.url + that.news.item.link,
+        chooserTitle: 'Виберіть спосіб'
+      }
+
+      var onSuccess = function(result) {
+        var msg = '';
+        if (result.completed) {
+          msg = 'Поширено';
+        }
+        else {
+          msg = 'Поширення не відбулося';
+        }
+        window.plugins.toast.showShortTop(msg);
+      }
+
+      var onError = function(msg) {
+        console.log("Помилка поширення");
+      }
+
+      window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+    },
+
     fetch: function (url, callback) {
       fetch(url).then(function(response) {
         return response.json();
@@ -73,8 +101,15 @@ module.exports = function (app) {
         id: 'date',
         layoutData: {left: 10, right: 10, top: [titleText, 10]},
         textColor: '#444',
-        text: "",
         alignment: "left"
+      }).appendTo(scrollView);
+
+      var shareBtn = new tabris.ImageView({
+        id: "share",
+        layoutData: {right: 10, top: [titleText, 0]},
+        image: {src: 'res/img/share.png'}
+      }).on("tap", function() {
+        that.clickShare();
       }).appendTo(scrollView);
 
       var mainimage = new tabris.ImageView({
