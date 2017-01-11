@@ -1,5 +1,6 @@
 
 var _ = require('lodash');
+var moment = require('moment');
 var DOMParser = require('xmldom').DOMParser;
 
 module.exports = function (app) {
@@ -40,8 +41,16 @@ module.exports = function (app) {
             scaleMode: "fill"
           }).appendTo(cell);
 
-          var nameTextView = new tabris.TextView({
-            layoutData: {left: 10, top: 10, right: [imageView, 10]},
+          var dateTextView = new tabris.TextView({
+            layoutData: {left: 10, right: 10, bottom: 1, height: 30},
+            textColor: '#444',
+            markupEnabled: true,
+            text: "",
+            alignment: "left"
+          }).appendTo(cell);
+
+          var titleTextView = new tabris.TextView({
+            layoutData: {left: 10, top: 10, right: [imageView, 10], bottom: [dateTextView, 5]},
             textColor: 'black', //   '#a01514',
             alignment: "left"
           }).appendTo(cell);
@@ -50,7 +59,8 @@ module.exports = function (app) {
             that.guids.push(obj.guid);
 
             imageView.set("image", {src: obj.img ? obj.img : 'res/img/no-image.png'});
-            nameTextView.set("text", obj.title);
+            dateTextView.set("text", '<small>' + obj.date + '</small>');
+            titleTextView.set("text", obj.title);
           });
         }
       })
@@ -58,7 +68,7 @@ module.exports = function (app) {
         that.refresh();
       })
       .on("select", function(target, value) {
-        console.log("selected", value.link);
+        app.states.view.open(value);
       })
       .on("scroll", function(collectionView, event) {
         if (collectionView.get("lastVisibleIndex") == that.total - 1) {
@@ -121,13 +131,15 @@ module.exports = function (app) {
             "author": xmlItems[i].getElementsByTagName("author")[0].firstChild.nodeValue,
             "category": xmlItems[i].getElementsByTagName("category")[0].firstChild.nodeValue,
             "description": xmlItems[i].getElementsByTagName("description")[0].firstChild.nodeValue,
-            "pubDate": xmlItems[i].getElementsByTagName("pubDate")[0].firstChild.nodeValue
+            "pubDate": new Date(xmlItems[i].getElementsByTagName("pubDate")[0].firstChild.nodeValue)
           };
 
           var img = item.description.match(/"K2FeedImage"><img src="(.+?)"/i);
           if (img.length >= 2) {
             item.img = img[1];
           }
+
+          item.date = moment(item.pubDate).format('DD.MM.YYYY, HH:mm');
 
           item.description = '';
 
