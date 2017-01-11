@@ -83,6 +83,8 @@ var app = {
     app.states.loading.init();
     app.states.list = require('./states/list')(app);
     app.states.list.init();
+    app.states.view = require('./states/view')(app);
+    app.states.view.init();
 
     app.states.loading.page.open();
     app.loadCats(function (err) {
