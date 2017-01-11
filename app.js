@@ -55,7 +55,6 @@ var app = {
       layoutData: {left: 0, top: [logo, 1], right: 0, bottom: 0},
       items: menuItems,
       itemHeight: 36,
-//      font: "bold 24px",
       initializeCell: function(cell) {
         var nameTextView = new tabris.TextView({
           layoutData: {left: 30, top: 16, right: 30},
@@ -65,7 +64,6 @@ var app = {
         cell.on("change:item", function(widget, it) {
           nameTextView.set("text", it.nameShifted);
         });
-
       }
     }).on("select", function(target, value) {
       app.clickCat(value.id);
@@ -75,7 +73,6 @@ var app = {
 
   init: function () {
     app.config = require('./config');
-
 
     tabris.ui.set('textColor', app.config.app.toolbar.textColor);
     tabris.ui.set('background', app.config.app.toolbar.background);
