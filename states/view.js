@@ -101,7 +101,6 @@ module.exports = function (app) {
 
     draw2: function () {
       var that = this;
-      console.log('draw 2', that.news.item.title);
 
       that.page.children("#loading").first().set('visible', false);
       that.page.children("#panel").first().set('visible', true);
@@ -123,17 +122,8 @@ module.exports = function (app) {
       });
 
       that.page.children("#panel").first().children("#more").first().set({
-        'text': that.news.item.fulltext
+        'text': that.news.item.fulltext + "<br />"
       });
-
-/*
-      if ('video' in that.news.item && that.news.item.video) {
-        new tabris.WebView({
-          layoutData: {left: 10, top: [that.page.children("#panel").first().children("#more").first(), 10], right: 10},
-          html: that.news.item.video
-        }).appendTo(that.page.children("#panel").first());
-      }
-*/
 
     },
 
