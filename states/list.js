@@ -201,6 +201,12 @@ module.exports = function (app) {
         else if (data.total > 0) {
           that.total += data.total;
           that.page.children("#newslist").first().insert(data.items);
+
+          setTimeout(function () {
+            if ( that.page.children("#newslist").first().get("lastVisibleIndex") == that.total - 1) {
+              that.append();
+            }
+          }, 1000);
         }
 
       });
