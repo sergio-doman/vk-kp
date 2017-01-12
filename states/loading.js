@@ -40,6 +40,10 @@ module.exports = function (app) {
 
 
     init: function () {
+      if (app.analytics) {
+        app.analytics.sendAppView('loading');
+      }
+
       this.draw();
     }
 

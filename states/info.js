@@ -11,6 +11,10 @@ module.exports = function (app) {
     open: function () {
       var that = this;
 
+      if (app.analytics) {
+        app.analytics.sendAppView('info');
+      }
+
       that.draw();
       that.page.open();
     },

@@ -52,6 +52,10 @@ module.exports = function (app) {
     open: function (newsRss) {
       var that = this;
 
+      if (app.analytics) {
+        app.analytics.sendAppView('view');
+      }
+
       that.newsRss = newsRss;
       that.draw();
       that.page.open();

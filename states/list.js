@@ -225,6 +225,10 @@ module.exports = function (app) {
     open: function (catId) {
       var that = this;
 
+      if (app.analytics) {
+        app.analytics.sendAppView('list');
+      }
+
       that.clear();
       that.catId = catId;
 

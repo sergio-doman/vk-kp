@@ -4,7 +4,7 @@ var async = require('async');
 
 var app = {
   config: {},
-
+  analytics: null,
   menu: {},
   catsNames: {},
   cats: {},
@@ -82,6 +82,12 @@ var app = {
 
   init: function () {
     app.config = require('./config');
+
+    if (app.config.gaTrackingId) {
+      app.analytics = navigator.analytics;
+      app.analytics.setTrackingId(app.config.gaTrackingId);
+      console.log('navigator.analytics: ', navigator.analytics)
+    }
 
     tabris.ui.set('textColor', app.config.app.toolbar.textColor);
     tabris.ui.set('background', app.config.app.toolbar.background);
