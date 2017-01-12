@@ -76,6 +76,15 @@ module.exports = function (app) {
         }
       })
       .appendTo(that.page);
+
+      new tabris.TextView({
+        id: 'nocontent',
+        layoutData: {centerX: 0, centerY: 0},
+        text: "Порожньо",
+        visible: false,
+        alignment: "center"
+      }).appendTo(that.page);
+
     },
 
     init: function () {
@@ -160,6 +169,13 @@ module.exports = function (app) {
       });
     },
 
+    checkIfEmpty: function () {
+      var that = this;
+      if (0 == that.total) {
+        that.page.children("#nocontent").first().set('visible', true);
+      }
+    },
+
     refresh: function () {
       var that = this;
 
@@ -181,8 +197,9 @@ module.exports = function (app) {
             that.total += newItems.length;
             that.page.children("#newslist").first().insert(newItems, 0);
           }
-
         }
+
+        that.checkIfEmpty();
       });
 
     },
@@ -209,6 +226,7 @@ module.exports = function (app) {
           }, 1000);
         }
 
+        that.checkIfEmpty();
       });
     },
 
@@ -219,6 +237,7 @@ module.exports = function (app) {
       that.progress = false;
       that.stopAppending = false;
       that.page.children("#newslist").first().set('items', []);
+      that.page.children("#nocontent").first().set('visible', false);
       that.total = 0;
     },
 

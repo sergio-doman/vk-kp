@@ -64,7 +64,7 @@ module.exports = function (app) {
         textColor: "white",
         // font: "bold 24px",
         alignment: "center",
-        text: "Неофіційна мобільна версія<br/>розробник:<br/>Доманіцький С.<br/><b>seraphio777@gmail.com</b>"
+        text: "Неофіційна мобільна версія<br/><b>seraphio777@gmail.com</b>"
       }).appendTo(that.page);
 
     },
