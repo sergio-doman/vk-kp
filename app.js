@@ -86,7 +86,6 @@ var app = {
     if (app.config.gaTrackingId) {
       app.analytics = navigator.analytics;
       app.analytics.setTrackingId(app.config.gaTrackingId);
-      console.log('navigator.analytics: ', navigator.analytics)
     }
 
     tabris.ui.set('textColor', app.config.app.toolbar.textColor);
