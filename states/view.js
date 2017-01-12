@@ -75,10 +75,10 @@ module.exports = function (app) {
         topLevel: false
       });
 
-      new tabris.TextView({
+      new tabris.ActivityIndicator({
         id: 'loading',
-        layoutData: {centerX: 0, centerY: 0},
-        text: "Завантаження.."
+        centerX: 0,
+        centerY: 0
       }).appendTo(that.page);
 
       var scrollView = new tabris.ScrollView({
@@ -94,7 +94,7 @@ module.exports = function (app) {
         markupEnabled: true,
         layoutData: {left: 10, right: 10, top: 20},
         font: "bold 24px",
-        text: "test title"
+        text: ""
       }).appendTo(scrollView);
 
       var dateText = new tabris.TextView({
@@ -138,6 +138,7 @@ module.exports = function (app) {
       var that = this;
 
       that.page.children("#loading").first().set('visible', false);
+
       that.page.children("#panel").first().set('visible', true);
 
       that.page.children("#panel").first().children("#title").first().set({

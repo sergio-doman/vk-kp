@@ -30,12 +30,12 @@ module.exports = function (app) {
         text: "неофіційна мобільна версія"
       }).appendTo(that.page);
 
-      new tabris.TextView({
-        layoutData: {centerX: 0, bottom: '1%'},
-        textColor: "white",
-        text: "Завантаження.."
-      }).appendTo(that.page);
 
+      new tabris.ActivityIndicator({
+        centerX: 0,
+        // centerY: 0
+        bottom: '1%'
+      }).appendTo(that.page);
     },
 
 

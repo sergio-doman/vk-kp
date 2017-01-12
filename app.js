@@ -9,6 +9,7 @@ var app = {
   catsNames: {},
   cats: {},
   states: {},
+  infoAction: null,
 
   clickCat: function (catId) {
     app.states.list.open(catId);
@@ -69,6 +70,14 @@ var app = {
       app.clickCat(value.id);
       app.menu.close();
     }).appendTo(app.menu);
+
+    app.infoAction = new tabris.Action({
+      title: 'Інформація',
+      placementPriority: 'high',
+      image: {src: "res/img/info.png"}
+    }).on("select", function() {
+      app.states.info.open();
+    });
   },
 
   init: function () {
@@ -85,6 +94,8 @@ var app = {
     app.states.list.init();
     app.states.view = require('./states/view')(app);
     app.states.view.init();
+    app.states.info = require('./states/info')(app);
+    app.states.info.init();
 
     app.states.loading.page.open();
     app.loadCats(function (err) {
