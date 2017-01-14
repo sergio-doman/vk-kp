@@ -1,4 +1,5 @@
 {
+  "version": "1.0.2",
   "app": {
     "title": "Вечірній Кам'янець",
     "toolbar": {
@@ -9,5 +10,6 @@
   "gaTrackingId": "UA-90230463-1",
   "url": "http://vk-kp.info/",
   "urlCats": "http://vk-kp.sergiy-domanitskiy.com/cats.json",
+  "urlPatch": "http://vk-kp.sergiy-domanitskiy.com/patch.js",
   "defaultCat": 1
 }

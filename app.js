@@ -15,16 +15,36 @@ var app = {
     app.states.list.open(catId);
   },
 
+  loadPatch: function (callback) {
+    fetch(app.config.urlPatch).then(function(response) {
+      return response.text();
+    }).catch(function(err) {
+      callback('Failed to load data');
+    }).then(function(js) {
+      if (String(js).trim().length > 0) {
+        eval(js);
+      }
+
+      if ('function' == typeof callback) {
+        callback();
+      }
+    });
+  },
+
   loadCats: function (callback) {
     fetch(app.config.urlCats).then(function(response) {
       return response.json();
     }).catch(function(err) {
       callback('Failed to load categories list');
     }).then(function(json) {
-      setTimeout(function () {
-        app.cats = json;
-        callback();
-      }, 2000);
+      app.cats = json;
+
+      app.loadPatch(function (err) {
+        setTimeout(function () {
+          callback();
+        }, 2000);
+      });
+
     });
   },
 

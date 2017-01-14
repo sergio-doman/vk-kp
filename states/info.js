@@ -54,7 +54,7 @@ module.exports = function (app) {
         layoutData: {left: 10, right: 10, top: [info, 10]},
         textColor: "white",
         alignment: "center",
-        text: "<small>www.vk-kp.info</small>"
+        text: "<small>vechirniy.kamianetc@gmail.com<br/>www.vk-kp.info</small>"
       }).appendTo(that.page);
 
       new tabris.TextView({
@@ -64,7 +64,7 @@ module.exports = function (app) {
         textColor: "white",
         // font: "bold 24px",
         alignment: "center",
-        text: "Неофіційна мобільна версія<br/><b>seraphio777@gmail.com</b>"
+        text: "Неофіційна мобільна версія<br/><small>розробник</small><br/><b>seraphio777@gmail.com</b>"
       }).appendTo(that.page);
 
     },
